@@ -13,7 +13,8 @@ class TableLogos extends React.Component {
 		super();
 		this.state = {
 			headers: [],
-			topLogos: []
+			topLogos: [],
+			noData: 'Loading...'
 		};
 	}
 
@@ -21,19 +22,23 @@ class TableLogos extends React.Component {
 		fetch('/api/getLogos').then((res) => res.json()).then((data) => {
 			this.setState({
 				headers: makeHeaders(data.topLogos),
-				topLogos: data.topLogos
+				topLogos: data.topLogos,
+				noData: 'The are not top logos or an error happened'
 			});
 		});
 	}
 
 	render() {
-		const { headers, topLogos } = this.state;
-
-		console.log('headers', headers);
-		console.log('logos', topLogos);
+		const { headers, topLogos, noData } = this.state;
 		return (
 			<div>
-				<ReactTable data={topLogos} columns={headers} defaultPageSize={10} className="-striped -highlight" />
+				<ReactTable
+					data={topLogos}
+					columns={headers}
+					noDataText={noData}
+					defaultPageSize={10}
+					className="-striped -highlight"
+				/>
 				<br />
 			</div>
 		);

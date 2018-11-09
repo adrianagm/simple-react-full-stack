@@ -14,7 +14,6 @@ const makeCell = (item, value) => {
 			break;
 		case 'tags':
 			var tags = value.map((v) => <div>{v}</div>);
-			console.log(tags);
 			return <div> {tags} </div>;
 			break;
 		case 'website':
@@ -26,9 +25,7 @@ const makeCell = (item, value) => {
 			break;
 		case 'enabled':
 			var circleStyle = {
-				padding: 10,
 				'margin-left': '45%',
-				'margin-top': '30px',
 				display: 'inline-block',
 				backgroundColor: value === 'true' ? '#57d500' : '#ff2e00',
 				borderRadius: '50%',
@@ -58,7 +55,8 @@ export function makeHeaders(topLogos) {
 			let column = {
 				Header: header[0].toUpperCase() + header.substring(1),
 				accessor: item,
-				Cell: (row) => makeCell(item, row.value)
+				Cell: (row) => makeCell(item, row.value),
+				width: item === 'img' ? 100 : item === 'enabled' ? 70 : 'auto'
 			};
 
 			if (!columns.find((c) => c && c.accessor === item)) {
@@ -74,9 +72,9 @@ export function makeHeaders(topLogos) {
 			}
 		});
 	});
-	console.log(columns);
 	let headers = [
 		{
+			Header: `Top Logos (${topLogos.length})`,
 			columns: columns
 		}
 	];
