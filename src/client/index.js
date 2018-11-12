@@ -1,5 +1,5 @@
-const TableLogos = require('./TableLogos');
+const TableLogos = require('./TableLogos/TableLogos');
 
 module.exports = {
-  TableLogos
+	TableLogos
 };

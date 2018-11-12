@@ -8,23 +8,20 @@ import 'react-table/react-table.css';
 
 // Import React Table
 
-class TableLogos extends React.Component {
+class EditLogo extends React.Component {
 	constructor() {
+		console.log('edit');
 		super();
 		this.state = {
 			headers: [],
 			topLogos: [],
-			noData: 'Loading...'
+			noData: 'Loading edit...'
 		};
 	}
 
 	componentDidMount() {
-		fetch('/api/getLogos').then((res) => res.json()).then((data) => {
-			this.setState({
-				headers: makeHeaders(data.topLogos),
-				topLogos: data.topLogos,
-				noData: 'The are not top logos or an error happened'
-			});
+		this.setState({
+			noData: 'edit'
 		});
 	}
 
@@ -45,4 +42,4 @@ class TableLogos extends React.Component {
 	}
 }
 
-render(<TableLogos />, document.getElementById('root'));
+render(<EditLogo />, document.getElementById('root'));

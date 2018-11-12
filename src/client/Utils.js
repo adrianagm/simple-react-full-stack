@@ -72,6 +72,7 @@ export function makeHeaders(topLogos) {
 			}
 		});
 	});
+	columns.push(addEditButton());
 	let headers = [
 		{
 			Header: `Top Logos (${topLogos.length})`,
@@ -81,12 +82,25 @@ export function makeHeaders(topLogos) {
 	return headers;
 }
 
+const addEditButton = () => {
+	return {
+		Header: '',
+		accessor: '',
+		Cell: editButton,
+		width: 100
+	};
+};
+
+function selectLogo(row) {
+	console.log('click', row);
+}
+
+function editButton(cellInfo) {
+	return <button onClick={selectLogo}>Edit</button>;
+}
+
 export const Tips = () => (
-	<div
-		style={{
-			textAlign: 'center'
-		}}
-	>
+	<div style={{ textAlign: 'center' }}>
 		<em> Tip: Hold shift when sorting to multi - sort! </em>{' '}
 	</div>
 );
