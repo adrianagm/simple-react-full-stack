@@ -2,88 +2,95 @@ const datastoreService = require('./services/datastore/datastore');
 const Datastore = require('@google-cloud/datastore');
 
 module.exports = class LogoModel {
-  constructor() {
-    this.kind = 'logo';
-  }
+	constructor() {
+		this.kind = 'logo';
+	}
 
-  list(filters, limit, order) {
-    let filter = {
-      entity: this.kind,
-      ns: process.env.GCLOUD_DATASTORE_NAMESPACE,
-      limit: limit
-    };
+	list(filters, limit, order) {
+		let filter = {
+			entity: this.kind,
+			ns: process.env.GCLOUD_DATASTORE_NAMESPACE
+		};
 
-    if (filters) {
-      filter.filters = filters;
-    }
+		if (filters) {
+			filter.filters = filters;
+		}
 
-    if (order) {
-      filter.order = order;
-    }
+		if (order) {
+			filter.order = order;
+		}
 
-    if (limit) {
-      filter.limit = limit;
-    }
+		if (limit) {
+			filter.limit = limit;
+		}
 
-    return datastoreService.list(filter);
-  }
+		return datastoreService.list(filter);
+	}
 
-  parseData(data) {
-    const entity = {
-      key: data[Datastore.KEY] ? data[Datastore.KEY] : datastoreService.key(this.kind),
-      data: this.toDatastore(data, this.indexFields)
-    };
-    return entity;
-  }
+	parseFromDatastore(data) {
+		const key = data[Datastore.KEY] ? data[Datastore.KEY] : datastoreService.key(this.kind);
+		data.id = key.id;
+		return data;
+	}
 
-  saveInDatastore(entity) {
-    return new Promise((resolve, reject) => {
-      datastoreService.save(
-        entity,
-        (err) => {
-          if (!err) {
-            resolve(entity);
-          } else {
-            console.log('error saving in datastore.' + err); // eslint-disable-line no-console
-            reject();
-          }
-        }
-      );
-    });
-  }
+	searchById(id) {
+		let filters = { [Datastore.KEY]: id };
+		return this.list(filters, 1);
+	}
 
-  toDatastore(obj, indexed) {
-    indexed = indexed || [];
-    const results = [];
-    Object.keys(obj).forEach((k) => {
-      if (obj[k] === undefined) {
-        return;
-      }
-      results.push({
-        name: k,
-        value: obj[k],
-        excludeFromIndexes: indexed.indexOf(k) === -1
-      });
-    });
-    return results;
-  }
+	parseData(data) {
+		const entity = {
+			key: data[Datastore.KEY] ? data[Datastore.KEY] : datastoreService.key(this.kind),
+			data: this.toDatastore(data, this.indexFields)
+		};
+		return entity;
+	}
 
-  removeEntities(entities) {
-    let results = entities,
-      keysToRemove = [];
-    for (let i = 0; i < results.length; i++) {
-      keysToRemove.push(results[i][Datastore.KEY]);
-    }
-    return datastoreService.bulkDelete(keysToRemove);
-  }
-  update(entity) {
-    datastoreService.update(entity);
-  }
+	saveInDatastore(entity) {
+		return new Promise((resolve, reject) => {
+			datastoreService.save(entity, (err) => {
+				if (!err) {
+					resolve(entity);
+				} else {
+					console.log('error saving in datastore.' + err); // eslint-disable-line no-console
+					reject();
+				}
+			});
+		});
+	}
 
-  bulkDelete(entities) {
-    datastoreService.bulkDelete(entities);
-  }
-  bulkCreate(entities) {
-    return datastoreService.bulkCreate(entities);
-  }
+	toDatastore(obj, indexed) {
+		indexed = indexed || [];
+		const results = [];
+		Object.keys(obj).forEach((k) => {
+			if (obj[k] === undefined) {
+				return;
+			}
+			results.push({
+				name: k,
+				value: obj[k],
+				excludeFromIndexes: indexed.indexOf(k) === -1
+			});
+		});
+		return results;
+	}
+
+	removeEntities(entities) {
+		let results = entities,
+			keysToRemove = [];
+		for (let i = 0; i < results.length; i++) {
+			keysToRemove.push(results[i][Datastore.KEY]);
+		}
+		return datastoreService.bulkDelete(keysToRemove);
+	}
+	update(entity) {
+		datastoreService.update(entity);
+	}
+
+	bulkDelete(entities) {
+		datastoreService.bulkDelete(entities);
+	}
+	bulkCreate(entities) {
+		return datastoreService.bulkCreate(entities);
+	}
 };

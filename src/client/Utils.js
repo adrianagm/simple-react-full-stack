@@ -1,12 +1,13 @@
 import React from 'react';
 import './index.css';
 
-const excludedFields = [ 'schema_version', 'altImg' ];
+const excludedFields = [ 'schema_version', 'altImg', 'id' ];
 
 const makeCell = (item, value) => {
 	if (!value) {
 		return value;
 	}
+
 	switch (item) {
 		case 'img':
 		case 'altImg':
@@ -72,7 +73,7 @@ export function makeHeaders(topLogos) {
 			}
 		});
 	});
-	columns.push(addEditButton());
+
 	let headers = [
 		{
 			Header: `Top Logos (${topLogos.length})`,
@@ -80,23 +81,6 @@ export function makeHeaders(topLogos) {
 		}
 	];
 	return headers;
-}
-
-const addEditButton = () => {
-	return {
-		Header: '',
-		accessor: '',
-		Cell: editButton,
-		width: 100
-	};
-};
-
-function selectLogo(row) {
-	console.log('click', row);
-}
-
-function editButton(cellInfo) {
-	return <button onClick={selectLogo}>Edit</button>;
 }
 
 export const Tips = () => (

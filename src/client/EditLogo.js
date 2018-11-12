@@ -2,11 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { makeHeaders } from './Utils';
 
-// Import React Table
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
-// Import React Table
+import queryString from 'query-string';
+const excludedFields = [ 'schema_version', 'altImg', 'id', 'creationDate', 'lastModifiedDate' ];
 
 class EditLogo extends React.Component {
 	constructor() {
@@ -14,29 +11,46 @@ class EditLogo extends React.Component {
 		super();
 		this.state = {
 			headers: [],
-			topLogos: [],
-			noData: 'Loading edit...'
+			topLogo: {}
 		};
 	}
 
 	componentDidMount() {
-		this.setState({
-			noData: 'edit'
-		});
+		const params = queryString.parse(location.search);
+		if (params.id) {
+			fetch('/api/getLogo/' + params.id).then((res) => res.json()).then((data) => {
+				this.setState({
+					topLogo: data.topLogo
+				});
+			});
+		}
 	}
 
 	render() {
-		const { headers, topLogos, noData } = this.state;
+		const { headers, topLogo, noData } = this.state;
+		console.log(topLogo);
 		return (
 			<div>
-				<ReactTable
-					data={topLogos}
-					columns={headers}
-					noDataText={noData}
-					defaultPageSize={10}
-					className="-striped -highlight"
-				/>
-				<br />
+				<form>
+					{Object.keys(topLogo).map((key, idx) => {
+						let inputId = `input-${key}`,
+							val = topLogo[key];
+						return (
+							<div key={idx}>
+								<label htmlFor={inputId}>{key}</label>
+								<input
+									type="text"
+									name={inputId}
+									data-id={idx}
+									id={inputId}
+									value={val}
+									className="name"
+								/>
+							</div>
+						);
+					})}
+					<input type="submit" value="Save" />
+				</form>
 			</div>
 		);
 	}

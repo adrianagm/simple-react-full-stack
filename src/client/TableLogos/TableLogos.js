@@ -5,7 +5,6 @@ import { makeHeaders } from '../Utils';
 // Import React Table
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-
 // Import React Table
 
 class TableLogos extends React.Component {
@@ -20,12 +19,36 @@ class TableLogos extends React.Component {
 
 	componentDidMount() {
 		fetch('/api/getLogos').then((res) => res.json()).then((data) => {
+			let headers = makeHeaders(data.topLogos);
+			headers[0].columns.push(this.addEditButton());
 			this.setState({
-				headers: makeHeaders(data.topLogos),
+				headers: headers,
 				topLogos: data.topLogos,
 				noData: 'The are not top logos or an error happened'
 			});
 		});
+	}
+
+	addEditButton = () => {
+		return {
+			Header: '',
+			accessor: '',
+			Cell: this.editButton.bind(this),
+			width: 100
+		};
+	};
+
+	selectLogo(row) {
+		let id = row.original.id;
+		window.location.href = '/editLogo?id=' + id;
+	}
+
+	editButton(cellInfo) {
+		return (
+			<button props={cellInfo} onClick={() => this.selectLogo(cellInfo)}>
+				Edit
+			</button>
+		);
 	}
 
 	render() {
