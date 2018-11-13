@@ -18,7 +18,14 @@ async function getLogoById(req, res) {
 	});
 }
 
+async function update(req, res) {
+	let logoModel = new LogoModel();
+	let saved = await logoModel.update(req.body.data, req.body.id);
+	res.send(saved);
+}
+
 module.exports = {
 	get,
-	getLogoById
+	getLogoById,
+	update
 };

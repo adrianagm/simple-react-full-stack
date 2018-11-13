@@ -2,6 +2,15 @@ import React from 'react';
 import './index.css';
 
 const excludedFields = [ 'schema_version', 'altImg', 'id' ];
+const nonEditableFields = [
+	'schema_version',
+	'altImg',
+	'id',
+	'creationDate',
+	'lastModifiedDate',
+	'logoEnabled',
+	'source'
+];
 
 const makeCell = (item, value) => {
 	if (!value) {
@@ -81,6 +90,30 @@ export function makeHeaders(topLogos) {
 		}
 	];
 	return headers;
+}
+
+export function makeFields(topLogo) {
+	let fields = [];
+	Object.keys(topLogo).forEach((key) => {
+		let value = topLogo[key];
+		if (nonEditableFields.indexOf(key) === -1) {
+			let field = {
+				name: key,
+				label: key,
+				required: true,
+				defaultValue: value
+			};
+			switch (key) {
+				case 'website':
+					field.type = 'url';
+					break;
+				default:
+					field.type = 'text';
+			}
+			fields.push(field);
+		}
+	});
+	return fields;
 }
 
 export const Tips = () => (

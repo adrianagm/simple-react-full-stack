@@ -5,10 +5,10 @@ const datastore = new Datastore({
 });
 
 module.exports = {
-	key: function(kind) {
+	key: function(kind, id) {
 		let key = datastore.key({
 			namespace: process.env.GCLOUD_DATASTORE_NAMESPACE,
-			path: [ kind ]
+			path: id ? [ kind, Number(id) ] : [ kind ]
 		});
 		return key;
 	},
@@ -26,6 +26,8 @@ module.exports = {
 						filter.hasOwnProperty('value')
 					) {
 						query.filter(filter.key, filter.operator, filter.value);
+					} else {
+						query.filter(key, '=', options.filters[key]);
 					}
 				} else {
 					query.filter(key, '=', options.filters[key]);

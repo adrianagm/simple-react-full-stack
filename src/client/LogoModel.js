@@ -1,5 +1,6 @@
 const datastoreService = require('./services/datastore/datastore');
 const Datastore = require('@google-cloud/datastore');
+const schemaVersion = 1;
 
 module.exports = class LogoModel {
 	constructor() {
@@ -34,13 +35,16 @@ module.exports = class LogoModel {
 	}
 
 	searchById(id) {
-		let filters = { [Datastore.KEY]: id };
+		let key = datastoreService.key(this.kind, id);
+		let filters = { __key__: key };
 		return this.list(filters, 1);
 	}
 
-	parseData(data) {
+	parseData(data, id) {
 		const entity = {
-			key: data[Datastore.KEY] ? data[Datastore.KEY] : datastoreService.key(this.kind),
+			key: id
+				? datastoreService.key(this.kind, id)
+				: data[Datastore.KEY] ? data[Datastore.KEY] : datastoreService.key(this.kind),
 			data: this.toDatastore(data, this.indexFields)
 		};
 		return entity;
@@ -59,6 +63,14 @@ module.exports = class LogoModel {
 		});
 	}
 
+	async update(data, id) {
+		data['schema-version'] = this.schemaVersion;
+		data.lastModifiedDate = new Date().toString();
+		data.logoEnabled = true;
+		data.source = 'default';
+		let entity = this.parseData(data, id);
+		return datastoreService.update(entity);
+	}
 	toDatastore(obj, indexed) {
 		indexed = indexed || [];
 		const results = [];
@@ -82,9 +94,6 @@ module.exports = class LogoModel {
 			keysToRemove.push(results[i][Datastore.KEY]);
 		}
 		return datastoreService.bulkDelete(keysToRemove);
-	}
-	update(entity) {
-		datastoreService.update(entity);
 	}
 
 	bulkDelete(entities) {

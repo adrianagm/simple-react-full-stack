@@ -1,4 +1,4 @@
-const EditLogo = require('../EditLogo');
+const EditLogo = require('./EditLogo');
 
 module.exports = {
 	EditLogo
