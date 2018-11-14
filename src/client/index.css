@@ -3,3 +3,17 @@ body {
   font-weight: 300;
   font-size: 14px;
 }
+
+.table-img .headers {
+  display: flex;
+}
+
+.table-img span {
+  width: 100px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.table-img img {
+  margin: 5px;
+}

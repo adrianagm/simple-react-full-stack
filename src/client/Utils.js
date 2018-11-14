@@ -10,7 +10,16 @@ const makeCell = (item, value) => {
 	switch (item) {
 		case 'img':
 		case 'altImg':
-			return <img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`)} />;
+			return (
+				<div class="table-img">
+					<div class="headers">
+						<span>1x</span>
+						<span>2x</span>
+					</div>
+					<img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`)} />
+					<img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_2x$1`)} />
+				</div>
+			);
 			break;
 		case 'tags':
 			var tags = value.map((v) => <div>{v}</div>);
@@ -56,7 +65,7 @@ export function makeHeaders(topLogos) {
 				Header: header[0].toUpperCase() + header.substring(1),
 				accessor: item,
 				Cell: (row) => makeCell(item, row.value),
-				width: item === 'img' ? 100 : item === 'enabled' ? 70 : 'auto'
+				width: item === 'img' ? 160 : item === 'enabled' ? 70 : 'auto'
 			};
 
 			if (!columns.find((c) => c && c.accessor === item)) {
@@ -72,6 +81,7 @@ export function makeHeaders(topLogos) {
 			}
 		});
 	});
+	console.log(columns);
 	let headers = [
 		{
 			Header: `Top Logos (${topLogos.length})`,
