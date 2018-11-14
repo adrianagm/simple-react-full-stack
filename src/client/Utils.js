@@ -98,17 +98,19 @@ export function makeFields(topLogo) {
 		let value = topLogo[key];
 		if (nonEditableFields.indexOf(key) === -1) {
 			let field = {
+				type: 'text',
 				name: key,
 				label: key,
 				required: true,
 				defaultValue: value
 			};
 			switch (key) {
-				case 'website':
-					field.type = 'url';
+				case 'types':
+					field.type = 'multiselect';
+					field.options = value.map((v) => {
+						return { id: v, label: v, value: true };
+					});
 					break;
-				default:
-					field.type = 'text';
 			}
 			fields.push(field);
 		}

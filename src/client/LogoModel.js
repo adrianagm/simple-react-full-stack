@@ -65,7 +65,7 @@ module.exports = class LogoModel {
 
 	async update(data, id) {
 		data['schema-version'] = this.schemaVersion;
-		data.lastModifiedDate = new Date().toString();
+		data.lastModifiedDate = new Date();
 		data.logoEnabled = true;
 		data.source = 'default';
 		let entity = this.parseData(data, id);

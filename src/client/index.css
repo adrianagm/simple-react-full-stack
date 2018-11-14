@@ -4,6 +4,6 @@ body {
   font-size: 14px;
 }
 
-.mui-form {
+.mui-form, .form-buttons {
   margin: 20px;
 }
