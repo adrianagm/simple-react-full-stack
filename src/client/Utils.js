@@ -4,7 +4,7 @@ import './index.css';
 const excludedFields = [ 'schema_version', 'altImg' ];
 
 const makeCell = (item, value) => {
-	if (!value) {
+	if (value === undefined) {
 		return value;
 	}
 	switch (item) {
@@ -26,17 +26,18 @@ const makeCell = (item, value) => {
 			return <div> {tags} </div>;
 			break;
 		case 'website':
+			let href = value.startsWith('http') ? value : '//' + value;
 			return (
-				<a target="_blank" href={'//' + value}>
+				<a target="_blank" href={href}>
 					{value}
 				</a>
 			);
 			break;
-		case 'enabled':
+		case 'logoEnabled':
 			var circleStyle = {
 				'margin-left': '45%',
 				display: 'inline-block',
-				backgroundColor: value === 'true' ? '#57d500' : '#ff2e00',
+				backgroundColor: value ? '#57d500' : '#ff2e00',
 				borderRadius: '50%',
 				width: 10,
 				height: 10
@@ -65,7 +66,7 @@ export function makeHeaders(topLogos) {
 				Header: header[0].toUpperCase() + header.substring(1),
 				accessor: item,
 				Cell: (row) => makeCell(item, row.value),
-				width: item === 'img' ? 160 : item === 'enabled' ? 70 : 'auto'
+				width: item === 'img' ? 160 : item === 'logoEnabled' ? 70 : 'auto'
 			};
 
 			if (!columns.find((c) => c && c.accessor === item)) {
