@@ -25,7 +25,7 @@ module.exports = {
 		const file = bucket.file(storagedName);
 		const stream = file.createWriteStream({
 			metadata: {
-				contentType: 'image/png'
+				contentType: 'image/jpeg'
 			},
 			public: true
 		});
@@ -53,8 +53,9 @@ module.exports = {
 			} else {
 				//is a local file
 
-				//var buf = Buffer.from(logo);
-				stream
+				//let image = fs.createReadStream(logo);
+				logo
+					.pipe(stream)
 					.on('finish', () => {
 						resolve(this.getPublicLink(bucketName, filename));
 					})
@@ -62,8 +63,7 @@ module.exports = {
 						console.log('error uploading default logo: ' + filename); // eslint-disable-line no-console
 						console.log(err); // eslint-disable-line no-console
 						reject();
-					})
-					.end(logo.pipe(stream));
+					});
 			}
 		});
 	},

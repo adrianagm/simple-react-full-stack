@@ -5,6 +5,7 @@ const dataUriToBuffer = require('data-uri-to-buffer');
 const sharp = require('sharp');
 const size1x = 96,
 	size2x = 192;
+var uploading = false;
 
 async function get(req, res) {
 	let logoModel = new LogoModel();
@@ -25,39 +26,38 @@ async function getLogoById(req, res) {
 }
 
 async function update(req, res) {
+	uploading = true;
 	let logoModel = new LogoModel();
 	let logo = dataUriToBuffer(req.body.data.img);
 	let logoName = req.body.data.name.replace(/\s+/g, '');
 
 	req.body.data.img = await saveLogos(logo, logoName);
 	let saved = await logoModel.update(req.body.data, req.body.id);
+	uploading = false;
 	res.send(saved);
 }
 
 async function saveLogos(logo, name) {
 	// secondary image added too
-	resizeImg(logo, name, true);
-	let link = await resizeImg(logo, name);
+	resizeImg(logo, name, '2x');
+	let link = await resizeImg(logo, name, '1x');
 	return link;
 }
-async function resizeImg(logo, name, secondarySize) {
+async function resizeImg(logo, name, size) {
 	return new Promise((resolve) => {
-		let sizes = getSizes(secondarySize, logo.size);
-		let logoName = name.replace('.jpg', `_${sizes.size}.jpg`);
+		let sizes = getSizes(size);
+		let logoName = name.toLowerCase();
 
-		let resizedLogo = sharp().resize(sizes.pxSize).overlayWith(Buffer.from(logo)).png();
-		resolve(storage.uploadLogo(bucketName, logoName, resizedLogo, sizes.size));
+		let resizedLogo = sharp(Buffer.from(logo)).resize(sizes.pxSize).png();
+		resolve(storage.uploadLogo(bucketName, logoName + `.png`, resizedLogo, sizes.size));
 	});
 }
-function getSizes(secondarySize, logoSize) {
+function getSizes(logoSize) {
 	let pxSize, size;
-	if (secondarySize) {
-		pxSize = logoSize === '1x' ? size2x : size1x;
-		size = logoSize === '1x' ? '2x' : '1x';
-	} else {
-		pxSize = logoSize === '1x' ? size1x : size2x;
-		size = logoSize;
-	}
+
+	pxSize = logoSize === '2x' ? size2x : size1x;
+	size = logoSize === '2x' ? '2x' : '1x';
+
 	return {
 		pxSize: pxSize,
 		size: size
