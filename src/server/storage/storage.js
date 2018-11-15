@@ -53,7 +53,7 @@ module.exports = {
 			} else {
 				//is a local file
 
-				var buf = Buffer.from(logo);
+				//var buf = Buffer.from(logo);
 				stream
 					.on('finish', () => {
 						resolve(this.getPublicLink(bucketName, filename));
@@ -63,7 +63,7 @@ module.exports = {
 						console.log(err); // eslint-disable-line no-console
 						reject();
 					})
-					.end(buf);
+					.end(logo.pipe(stream));
 			}
 		});
 	},

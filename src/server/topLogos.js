@@ -36,19 +36,17 @@ async function update(req, res) {
 
 async function saveLogos(logo, name) {
 	// secondary image added too
-	// resizeImg(logo, name, true);
-	// let link = await resizeImg(logo, name);
-	// return link;
-	return storage.uploadLogo(bucketName, name, logo);
+	resizeImg(logo, name, true);
+	let link = await resizeImg(logo, name);
+	return link;
 }
 async function resizeImg(logo, name, secondarySize) {
 	return new Promise((resolve) => {
 		let sizes = getSizes(secondarySize, logo.size);
 		let logoName = name.replace('.jpg', `_${sizes.size}.jpg`);
 
-		sharp(logo).resize(sizes.pxSize).toFile(logoName).then((resized) => {
-			resolve(storage.uploadLogo(bucketName, logoName, resized, sizes.size));
-		});
+		let resizedLogo = sharp().resize(sizes.pxSize).overlayWith(Buffer.from(logo)).png();
+		resolve(storage.uploadLogo(bucketName, logoName, resizedLogo, sizes.size));
 	});
 }
 function getSizes(secondarySize, logoSize) {
