@@ -1,0 +1,276 @@
+[
+	{
+		"id": "accounting"
+	},
+	{
+		"id": "airport"
+	},
+	{
+		"id": "amusement_park"
+	},
+	{
+		"id": "aquarium"
+	},
+	{
+		"id": "art_gallery"
+	},
+	{
+		"id": "atm"
+	},
+	{
+		"id": "bakery"
+	},
+	{
+		"id": "bank"
+	},
+	{
+		"id": "bar"
+	},
+	{
+		"id": "beauty_salon"
+	},
+	{
+		"id": "bicycle_store"
+	},
+	{
+		"id": "book_store"
+	},
+	{
+		"id": "bowling_alley"
+	},
+	{
+		"id": "bus_station"
+	},
+	{
+		"id": "cafe"
+	},
+	{
+		"id": "campground"
+	},
+	{
+		"id": "car_dealer"
+	},
+	{
+		"id": "car_rental"
+	},
+	{
+		"id": "car_repair"
+	},
+	{
+		"id": "car_wash"
+	},
+	{
+		"id": "casino"
+	},
+	{
+		"id": "cemetery"
+	},
+	{
+		"id": "church"
+	},
+	{
+		"id": "city_hall"
+	},
+	{
+		"id": "clothing_store"
+	},
+	{
+		"id": "convenience_store"
+	},
+	{
+		"id": "courthouse"
+	},
+	{
+		"id": "dentist"
+	},
+	{
+		"id": "department_store"
+	},
+	{
+		"id": "doctor"
+	},
+	{
+		"id": "electrician"
+	},
+	{
+		"id": "electronics_store"
+	},
+	{
+		"id": "embassy"
+	},
+	{
+		"id": "fire_station"
+	},
+	{
+		"id": "florist"
+	},
+	{
+		"id": "funeral_home"
+	},
+	{
+		"id": "furniture_store"
+	},
+	{
+		"id": "gas_station"
+	},
+	{
+		"id": "gym"
+	},
+	{
+		"id": "hair_care"
+	},
+	{
+		"id": "hardware_store"
+	},
+	{
+		"id": "hindu_temple"
+	},
+	{
+		"id": "home_goods_store"
+	},
+	{
+		"id": "hospital"
+	},
+	{
+		"id": "insurance_agency"
+	},
+	{
+		"id": "jewelry_store"
+	},
+	{
+		"id": "laundry"
+	},
+	{
+		"id": "lawyer"
+	},
+	{
+		"id": "library"
+	},
+	{
+		"id": "liquor_store"
+	},
+	{
+		"id": "local_government_office"
+	},
+	{
+		"id": "locksmith"
+	},
+	{
+		"id": "lodging"
+	},
+	{
+		"id": "meal_delivery"
+	},
+	{
+		"id": "meal_takeaway"
+	},
+	{
+		"id": "mosque"
+	},
+	{
+		"id": "movie_rental"
+	},
+	{
+		"id": "movie_theater"
+	},
+	{
+		"id": "moving_company"
+	},
+	{
+		"id": "museum"
+	},
+	{
+		"id": "night_club"
+	},
+	{
+		"id": "painter"
+	},
+	{
+		"id": "park"
+	},
+	{
+		"id": "parking"
+	},
+	{
+		"id": "pet_store"
+	},
+	{
+		"id": "pharmacy"
+	},
+	{
+		"id": "physiotherapist"
+	},
+	{
+		"id": "plumber"
+	},
+	{
+		"id": "police"
+	},
+	{
+		"id": "post_office"
+	},
+	{
+		"id": "real_estate_agency"
+	},
+	{
+		"id": "restaurant"
+	},
+	{
+		"id": "roofing_contractor"
+	},
+	{
+		"id": "rv_park"
+	},
+	{
+		"id": "school"
+	},
+	{
+		"id": "shoe_store"
+	},
+	{
+		"id": "shopping_mall"
+	},
+	{
+		"id": "spa"
+	},
+	{
+		"id": "stadium"
+	},
+	{
+		"id": "storage"
+	},
+	{
+		"id": "store"
+	},
+	{
+		"id": "subway_station"
+	},
+	{
+		"id": "supermarket"
+	},
+	{
+		"id": "synagogue"
+	},
+	{
+		"id": "taxi_stand"
+	},
+	{
+		"id": "train_station"
+	},
+	{
+		"id": "transit_station"
+	},
+	{
+		"id": "travel_agency"
+	},
+	{
+		"id": "veterinary_care"
+	},
+	{
+		"id": "zoo"
+	},
+	{
+		"id": "mrs_default",
+		"label": "unknown"
+	}
+]

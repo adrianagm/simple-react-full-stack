@@ -7,3 +7,33 @@ body {
 .mui-form, .form-buttons {
   margin: 20px;
 }
+
+.fileUploader.img-uploader {
+  width: 100px;
+}
+
+.img-uploader .fileContainer .chooseFileButton {
+  background: none;
+  border-radius: 0px;
+  color: #2196F3;
+}
+
+.img-uploader .fileContainer .chooseFileButton:hover {
+  background: #ddd;
+  border-radius: 0px;
+  color: #2196F3;
+}
+
+.img-uploader .fileContainer {
+  background: #fff;
+  box-shadow: none;
+  position: relative;
+  border-radius: 0px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0px;
+  transition: all 0.3s ease-in;
+}

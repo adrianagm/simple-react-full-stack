@@ -1,4 +1,4 @@
-const datastoreService = require('./services/datastore/datastore');
+const datastoreService = require('./datastore/datastore');
 const Datastore = require('@google-cloud/datastore');
 const schemaVersion = 1;
 

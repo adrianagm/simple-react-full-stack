@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const topLogos = require('../client/topLogos');
+const topLogos = require('./topLogos');
 const bodyParser = require('body-parser');
 
 const app = express();

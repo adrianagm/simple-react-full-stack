@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-
+const types = require('./EditLogo/types.json');
 const excludedFields = [ 'schema_version', 'altImg', 'id' ];
 const nonEditableFields = [
 	'schema_version',
@@ -107,9 +107,18 @@ export function makeFields(topLogo) {
 			switch (key) {
 				case 'types':
 					field.type = 'multiselect';
-					field.options = value.map((v) => {
-						return { id: v, label: v, value: true };
+					field.options = types.map((type) => {
+						return {
+							id: type.id,
+							label: type.label || type.id,
+							value: value.find((v) => v.toLowerCase() === type.id)
+						};
 					});
+					break;
+				case 'img':
+				case 'altImg':
+					field.type = 'imguploader';
+					field.src = value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`);
 					break;
 			}
 			fields.push(field);

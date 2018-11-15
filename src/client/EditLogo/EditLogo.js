@@ -7,6 +7,7 @@ import Form from 'muicss/lib/react/form';
 import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
 import MultiSelectReact from 'multi-select-react';
+import { ImageUploader } from './ImageUploader';
 
 class EditLogo extends React.Component {
 	constructor() {
@@ -42,6 +43,15 @@ class EditLogo extends React.Component {
 		if (name === 'tags' && name === 'types') {
 			this.state.topLogo[name] = value.split(',');
 		}
+	}
+	changeImage(picture, field) {
+		console.log(picture);
+		this.state.topLogo[field.name] = picture;
+		/*let logoName = field.name.replace(/\s+/g, '');
+		 sharp(picture).resize(96).toFile(logoName).then((data) => {
+			console.log(data);
+			this.state.topLogo[field.name] = data;
+		}); */
 	}
 	validateField(name, value) {
 		let field = this.state.fields.find((f) => f.name === name);
@@ -108,6 +118,20 @@ class EditLogo extends React.Component {
 										selectedOptionsStyles={selectedOptionsStyles}
 										optionsListStyles={optionsListStyles}
 									/>
+								</div>
+							);
+						} else if (field.type == 'imguploader') {
+							return (
+								<div>
+									<label for={field.name}>{field.name}</label>
+									<ImageUploader
+										name={field.name}
+										src={field.src}
+										callbackParent={(e) => {
+											this.changeImage(e, field);
+										}}
+									/>
+									<p>Drop an image or click to open the file picker.</p>
 								</div>
 							);
 						} else {
