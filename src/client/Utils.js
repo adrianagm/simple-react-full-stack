@@ -2,15 +2,7 @@ import React from 'react';
 import './index.css';
 const types = require('./EditLogo/types.json');
 const excludedFields = [ 'schema_version', 'altImg', 'id' ];
-const nonEditableFields = [
-	'schema_version',
-	'altImg',
-	'id',
-	'creationDate',
-	'lastModifiedDate',
-	'logoEnabled',
-	'source'
-];
+const nonEditableFields = [ 'schema_version', 'altImg', 'id', 'creationDate', 'lastModifiedDate', 'source' ];
 
 const makeCell = (item, value) => {
 	if (value === undefined) {
@@ -124,6 +116,22 @@ export function makeFields(topLogo) {
 							value: value.find((v) => v.toLowerCase() === type.id)
 						};
 					});
+					break;
+				case 'logoEnabled':
+					field.type = 'multiselect';
+					field.single = true;
+					field.options = [
+						{
+							id: 'true',
+							label: 'Enabled',
+							value: value === true
+						},
+						{
+							id: 'false',
+							label: 'Disabled',
+							value: value === false
+						}
+					];
 					break;
 				case 'img':
 				case 'altImg':

@@ -67,6 +67,10 @@ function getSizes(logoSize) {
 	};
 }
 
+function init() {
+	TableLogos.init();
+}
+
 module.exports = {
 	get,
 	getLogoById,

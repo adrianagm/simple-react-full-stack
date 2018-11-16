@@ -70,9 +70,19 @@ class EditLogo extends React.Component {
 		});
 	}
 	back() {
-		window.location.href = '/';
+		const params = queryString.parse(location.search);
+		let query = {
+			page: params.page,
+			pageSize: params.pageSize
+		};
+		const stringified = queryString.stringify(query);
+		window.location.href = '/?' + stringified;
 	}
 	save() {
+		this.setState({
+			invalidForm: true,
+			saving: true
+		});
 		fetch('/api/updateLogo', {
 			method: 'POST',
 			headers: {
@@ -80,7 +90,17 @@ class EditLogo extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ id: this.id, data: this.state.topLogo })
-		}).then(() => this.back());
+		})
+			.then(() => {
+				this.back();
+			})
+			.catch(() => {
+				this.saving = true;
+				this.setState({
+					invalidForm: false,
+					saving: false
+				});
+			});
 	}
 	optionClicked(optionsList) {
 		this.setState({ selectOptions: [ 'hola' ] });
@@ -90,7 +110,7 @@ class EditLogo extends React.Component {
 	}
 
 	render() {
-		const { fields, invalidForm } = this.state;
+		const { fields, invalidForm, saving } = this.state;
 		const selectedOptionsStyles = {
 			color: '#3c763d',
 			backgroundColor: '#dff0d8'
@@ -122,6 +142,7 @@ class EditLogo extends React.Component {
 										selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
 										selectedOptionsStyles={selectedOptionsStyles}
 										optionsListStyles={optionsListStyles}
+										isSingleSelect={field.single}
 									/>
 								</div>
 							);
@@ -164,7 +185,7 @@ class EditLogo extends React.Component {
 				</Form>
 				<div class="form-buttons">
 					<Button
-						disabled={invalidForm}
+						disabled={invalidForm || saving}
 						variant="raised"
 						onClick={() => {
 							this.save();
@@ -175,6 +196,7 @@ class EditLogo extends React.Component {
 					<Button variant="raised" onClick={this.back}>
 						Cancel
 					</Button>
+					{saving ? <span class="saving">Saving...</span> : ''}
 				</div>
 			</div>
 		);

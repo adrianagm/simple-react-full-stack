@@ -6,18 +6,18 @@ import { makeHeaders } from '../Utils';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 // Import React Table
+import queryString from 'query-string';
 
 class TableLogos extends React.Component {
 	constructor(props) {
 		super();
-		console.log(props);
+		const { page, pageSize } = queryString.parse(location.search);
 		this.state = {
 			headers: [],
 			topLogos: [],
 			noData: 'Loading...',
-			page: 0,
-			pageSize: 10,
-			sorted: []
+			page: page ? parseInt(page) : 0,
+			pageSize: pageSize ? parseInt(pageSize) : 10
 		};
 	}
 
@@ -44,8 +44,14 @@ class TableLogos extends React.Component {
 
 	selectLogo(row) {
 		let id = row.original.id;
-		console.log(this.state.page);
-		window.location.href = '/editLogo?id=' + id;
+		const { page, pageSize } = this.state;
+		let query = {
+			id: id,
+			page: page,
+			pageSize: pageSize
+		};
+		const stringified = queryString.stringify(query);
+		window.location.href = '/editLogo?' + stringified;
 	}
 
 	editButton(cellInfo) {
@@ -56,18 +62,15 @@ class TableLogos extends React.Component {
 		);
 	}
 	pageChange(page) {
-		this.setState({ page: page + 1 });
-		console.log(this.state);
+		this.setState({ page: page });
 	}
 	pageSizeChange(pageSize) {
+		console.log(pageSize);
 		this.setState({ pageSize: pageSize });
-	}
-	pageSortedChange(sorted) {
-		this.setState({ sorted: sorted });
 	}
 
 	render() {
-		const { headers, topLogos, noData, page, pageSize, sorted } = this.state;
+		const { headers, topLogos, noData, page, pageSize } = this.state;
 		return (
 			<div>
 				<ReactTable
@@ -76,15 +79,12 @@ class TableLogos extends React.Component {
 					noDataText={noData}
 					defaultPageSize={pageSize}
 					page={page}
-					sorted={sorted}
+					sortable={false}
 					onPageChange={(p) => {
 						this.pageChange(p);
 					}}
 					onPageSizeChange={(s) => {
 						this.pageSizeChange(s);
-					}}
-					onSortedChange={(s) => {
-						this.pageSortedChange(s);
 					}}
 					className="-striped -highlight"
 				/>
