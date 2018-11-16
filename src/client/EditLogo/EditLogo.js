@@ -8,6 +8,7 @@ import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
 import MultiSelectReact from 'multi-select-react';
 import { ImageUploader } from './ImageUploader';
+const minImgWidth = 192;
 
 class EditLogo extends React.Component {
 	constructor() {
@@ -36,22 +37,16 @@ class EditLogo extends React.Component {
 		const value = target.value;
 		const name = target.name;
 		this.validateField(name, value);
-		this.setState({
-			invalidForm: this.state.fields.find((f) => f.invalid === true)
-		});
+
 		this.state.topLogo[name] = value;
 		if (name === 'tags' && name === 'types') {
 			this.state.topLogo[name] = value.split(',');
 		}
 	}
-	changeImage(picture, field) {
-		console.log(picture);
+	changeImage(picture, width, field) {
+		field.invalid = width < minImgWidth;
+		this.validateForm();
 		this.state.topLogo[field.name] = picture;
-		/*let logoName = field.name.replace(/\s+/g, '');
-		 sharp(picture).resize(96).toFile(logoName).then((data) => {
-			console.log(data);
-			this.state.topLogo[field.name] = data;
-		}); */
 	}
 	validateField(name, value) {
 		let field = this.state.fields.find((f) => f.name === name);
@@ -62,18 +57,22 @@ class EditLogo extends React.Component {
 		switch (name) {
 			case 'website':
 				var re = /[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
-				console.log(!re.test(value));
 				field.invalid = !re.test(value);
 				break;
 			default:
 				field.invalid = false;
 		}
+		this.validateForm();
+	}
+	validateForm() {
+		this.setState({
+			invalidForm: this.state.fields.find((f) => f.invalid === true)
+		});
 	}
 	back() {
 		window.location.href = '/';
 	}
 	save() {
-		console.log(this.state);
 		fetch('/api/updateLogo', {
 			method: 'POST',
 			headers: {
@@ -100,7 +99,6 @@ class EditLogo extends React.Component {
 			backgroundColor: '#dff0d8',
 			color: '#3c763d'
 		};
-		console.log(fields);
 		return (
 			<div>
 				<Form>
@@ -110,6 +108,13 @@ class EditLogo extends React.Component {
 							return (
 								<div class="mui-textfield">
 									<label for={field.name}>{field.name}</label>
+									{field.invalid && field.error ? (
+										<div class="error">
+											{field.error} {minImgWidth}
+										</div>
+									) : (
+										''
+									)}
 									<MultiSelectReact
 										name={field.name}
 										options={field.options}
@@ -123,12 +128,21 @@ class EditLogo extends React.Component {
 						} else if (field.type == 'imguploader') {
 							return (
 								<div>
-									<label for={field.name}>{field.name}</label>
+									<label class="label-form" for={field.name}>
+										{field.name}
+									</label>
+									{field.invalid && field.error ? (
+										<div class="error">
+											{field.error} {minImgWidth}
+										</div>
+									) : (
+										''
+									)}
 									<ImageUploader
 										name={field.name}
 										src={field.src}
-										callbackParent={(e) => {
-											this.changeImage(e, field);
+										callbackParent={(src, width) => {
+											this.changeImage(src, width, field);
 										}}
 									/>
 									<p>Drop an image or click to open the file picker.</p>

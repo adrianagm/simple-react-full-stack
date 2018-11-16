@@ -4,12 +4,43 @@ body {
   font-size: 14px;
 }
 
+.table-img .headers {
+  display: flex;
+}
+
+.table-img span {
+  width: 100px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.table-img img {
+  margin: 5px;
+}
+
 .mui-form, .form-buttons {
   margin: 20px;
 }
 
 .fileUploader.img-uploader {
   width: 100px;
+}
+
+.label-form {
+  display: block;
+  width: 100%;
+  color: rgba(0, 0, 0, .54);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.error {
+  font-size: 10px;
+  color: red;
 }
 
 .img-uploader .fileContainer .chooseFileButton {

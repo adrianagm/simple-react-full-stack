@@ -56,13 +56,17 @@ class ImageUploader extends React.Component {
 		}
 
 		this.setState({ loaded: false });
-
+		let imgEl = document.getElementById('logo_image');
+		if (imgEl) {
+			imgEl.onload = () => {
+				this.props.callbackParent(imgEl.src, imgEl.naturalWidth);
+			};
+		}
 		reader.onload = (e) => {
 			this.setState({
 				imageSrc: reader.result,
 				loaded: true
 			});
-			this.props.callbackParent(reader.result);
 		};
 
 		reader.readAsDataURL(file);
@@ -100,7 +104,7 @@ class ImageUploader extends React.Component {
 				onDrop={this.onDrop}
 				style={{ outlineColor: borderColor }}
 			>
-				<img src={state.imageSrc} className={state.loaded && 'loaded'} />
+				<img id="logo_image" src={state.imageSrc} className={state.loaded && 'loaded'} />
 				<i className="icon icon-upload" style={{ color: iconColor }} />
 				<input type="file" accept="image/*" onChange={this.onFileChange} ref="input" />
 			</label>

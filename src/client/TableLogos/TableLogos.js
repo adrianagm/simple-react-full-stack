@@ -8,12 +8,16 @@ import 'react-table/react-table.css';
 // Import React Table
 
 class TableLogos extends React.Component {
-	constructor() {
+	constructor(props) {
 		super();
+		console.log(props);
 		this.state = {
 			headers: [],
 			topLogos: [],
-			noData: 'Loading...'
+			noData: 'Loading...',
+			page: 0,
+			pageSize: 10,
+			sorted: []
 		};
 	}
 
@@ -40,6 +44,7 @@ class TableLogos extends React.Component {
 
 	selectLogo(row) {
 		let id = row.original.id;
+		console.log(this.state.page);
 		window.location.href = '/editLogo?id=' + id;
 	}
 
@@ -50,16 +55,37 @@ class TableLogos extends React.Component {
 			</button>
 		);
 	}
+	pageChange(page) {
+		this.setState({ page: page + 1 });
+		console.log(this.state);
+	}
+	pageSizeChange(pageSize) {
+		this.setState({ pageSize: pageSize });
+	}
+	pageSortedChange(sorted) {
+		this.setState({ sorted: sorted });
+	}
 
 	render() {
-		const { headers, topLogos, noData } = this.state;
+		const { headers, topLogos, noData, page, pageSize, sorted } = this.state;
 		return (
 			<div>
 				<ReactTable
 					data={topLogos}
 					columns={headers}
 					noDataText={noData}
-					defaultPageSize={10}
+					defaultPageSize={pageSize}
+					page={page}
+					sorted={sorted}
+					onPageChange={(p) => {
+						this.pageChange(p);
+					}}
+					onPageSizeChange={(s) => {
+						this.pageSizeChange(s);
+					}}
+					onSortedChange={(s) => {
+						this.pageSortedChange(s);
+					}}
 					className="-striped -highlight"
 				/>
 				<br />

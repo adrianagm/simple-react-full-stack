@@ -13,31 +13,41 @@ const nonEditableFields = [
 ];
 
 const makeCell = (item, value) => {
-	if (!value) {
+	if (value === undefined) {
 		return value;
 	}
 
 	switch (item) {
 		case 'img':
 		case 'altImg':
-			return <img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`)} />;
+			return (
+				<div class="table-img">
+					<div class="headers">
+						<span>1x</span>
+						<span>2x</span>
+					</div>
+					<img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`)} />
+					<img width="70" src={value.replace(/(\.[\w\d_-]+)$/i, `_2x$1`)} />
+				</div>
+			);
 			break;
 		case 'tags':
 			var tags = value.map((v) => <div>{v}</div>);
 			return <div> {tags} </div>;
 			break;
 		case 'website':
+			let href = value.startsWith('http') ? value : '//' + value;
 			return (
-				<a target="_blank" href={'//' + value}>
+				<a target="_blank" href={href}>
 					{value}
 				</a>
 			);
 			break;
-		case 'enabled':
+		case 'logoEnabled':
 			var circleStyle = {
 				'margin-left': '45%',
 				display: 'inline-block',
-				backgroundColor: value === 'true' ? '#57d500' : '#ff2e00',
+				backgroundColor: value ? '#57d500' : '#ff2e00',
 				borderRadius: '50%',
 				width: 10,
 				height: 10
@@ -66,7 +76,7 @@ export function makeHeaders(topLogos) {
 				Header: header[0].toUpperCase() + header.substring(1),
 				accessor: item,
 				Cell: (row) => makeCell(item, row.value),
-				width: item === 'img' ? 100 : item === 'enabled' ? 70 : 'auto'
+				width: item === 'img' ? 160 : item === 'logoEnabled' ? 70 : 'auto'
 			};
 
 			if (!columns.find((c) => c && c.accessor === item)) {
@@ -119,6 +129,7 @@ export function makeFields(topLogo) {
 				case 'altImg':
 					field.type = 'imguploader';
 					field.src = value.replace(/(\.[\w\d_-]+)$/i, `_1x$1`);
+					field.error = 'Image width must be greater than ';
 					break;
 			}
 			fields.push(field);

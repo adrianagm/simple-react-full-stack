@@ -26,6 +26,9 @@ async function getLogoById(req, res) {
 }
 
 async function update(req, res) {
+	if (uploading) {
+		return;
+	}
 	uploading = true;
 	let logoModel = new LogoModel();
 	let logo = dataUriToBuffer(req.body.data.img);
